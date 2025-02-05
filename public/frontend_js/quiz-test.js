@@ -1370,7 +1370,6 @@ async function askQuestion(totalQuizQuestions, counter, fromBack) {
           : [],
       });
 
-      //add ranges
       $("#typeSlide .answerInner .sliderRanges").append(`
         <div data-val="${val.answer}" data-id="${
         val.id
@@ -1404,7 +1403,7 @@ async function askQuestion(totalQuizQuestions, counter, fromBack) {
       );
       $("#myRange").trigger("input", [true]);
     }
-  } // type 6 ends here
+  } 
   else if (type == 7) {
     $("#typeSelection .answerInner").html("");
     $("#typeSelection").css("display", "block");
@@ -1421,7 +1420,6 @@ async function askQuestion(totalQuizQuestions, counter, fromBack) {
         `);
       }
     });
-    // Add "None of the above" option
     $("#typeSelection .answerInner").append(`
       <div class="selectionOptions">
         <button class="selectionBtns selectionBtn" onclick="handleNoneOfTheAbove()">None of the above</button>
@@ -1453,7 +1451,7 @@ async function askQuestion(totalQuizQuestions, counter, fromBack) {
         });
       }
     }
-  } //type 7 ends here
+  } 
   else if (type == 8) {
     $("#typeGeo").css("display", "block");
     currentActiveAnswerType = "typeGeo";
@@ -1729,7 +1727,6 @@ async function storeAnswer(currentQuestion, currentActiveAnswerType) {
   } else if (currentActiveAnswerType == "typeGeo") {
     ans = $("#typeGeo input#city").val();
     city_id = $("#typeGeo #city_id").val();
-    //check if answer but not city_id
     if (!ans) {
       return false;
     }
@@ -1797,7 +1794,6 @@ async function storeAnswer(currentQuestion, currentActiveAnswerType) {
     }
   }
   localStorage.setItem("answers", JSON.stringify(dataToReturn));
-  // Save the current state to localStorage
   const quizState = {
     currentQuizIndex: currentQuizIndex,
     currentQuestionCounter: currentQuestionCounter,
@@ -1928,7 +1924,6 @@ $("#typeGeo input").on("keyup", function (evt) {
     });
 });
 
-//handlers
 $(document).on("input", "#myRange", async function (event, isCustom) {
   clearTimeout(timeout);
   sliderVal = parseFloat($(this).val());
@@ -1970,9 +1965,7 @@ $(document).on("input", "#myRange", async function (event, isCustom) {
   }
 });
 
-// Define allergens in a higher scope
-const allergens = ["Banana", "Olive", "Sunflowers"]; // This should match the allergens used in checkAllergie
-
+const allergens = ["Banana", "Olive", "Sunflowers"]; 
 $(document).on("click", ".selectionBtn", function (evt, isCustom) {
   clearTimeout(timeout);
   var val = $(this).attr("data-val");
@@ -1987,9 +1980,7 @@ $(document).on("click", ".selectionBtn", function (evt, isCustom) {
   }
   if (!isCustom) {
     timeout = setTimeout(function () {
-      // Check for allergy before proceeding to the next question
       if (!allergens.includes(val)) {
-        // Assuming 'val' is the answer being checked
         nextQuestion();
       }
     }, selectionQuestionTimeoutCounter);
@@ -2114,27 +2105,21 @@ function handleImageMissing(self) {
 }
 
 function checkAllergie(answer) {
-  // Step 1: Check if the answer is an allergen
   const allergens = ["Banana", "Olive", "Sunflowers"];
   if (allergens.includes(answer)) {
-    // Step 2: Fetch termination message and counter from API
     fetch(url_preset + "/api/v1/member/terminate?role=2")
       .then((response) => response.json())
       .then((data) => {
         console.log(data, "data==>");
 
-        // Step 3: Switch to page10
-        $("#page10").css("display", "block"); // Show page 10
-        // Hide all other pages
+        $("#page10").css("display", "block"); 
         $(
           "#page1, #page2, #page3, #page4, #page5, #page6, #page7, #page8, #page9"
         ).css("display", "none");
 
-        // Display the message
         $("#page10 .messageDiv p").text(data.data.message);
 
-        // Step 4: Start countdown
-        let counter = data.data.counter; // Assuming the API returns a counter
+        let counter = data.data.counter; 
         const countdownElement = $("#page10 .counter h3");
         countdownElement.text(counter);
 
@@ -2143,11 +2128,10 @@ function checkAllergie(answer) {
           countdownElement.text(counter);
           if (counter <= 0) {
             clearInterval(interval);
-            // Reset quiz and clear local storage
             currentQuizIndex = 0;
             currentQuestionCounter = 0;
-            localStorage.removeItem("answers"); // Clear stored answers
-            localStorage.removeItem("quizState"); // Clear quiz state
+            localStorage.removeItem("answers"); 
+            localStorage.removeItem("quizState"); 
 
             $("#page1").css("display", "none");
             $("#page2").css("display", "none");
@@ -2160,15 +2144,13 @@ function checkAllergie(answer) {
 
             location.reload();
           }
-        }, 1000); // Update every second
+        }, 1000); 
       })
       .catch((error) => {
         console.error("Error fetching termination message:", error);
       });
-    // Stop further actions and quit the quiz
-    return; // Exit the function to prevent going to the next question
+    return; 
   } else {
-    // Proceed with the quiz if no allergy
     nextQuestion();
   }
 }

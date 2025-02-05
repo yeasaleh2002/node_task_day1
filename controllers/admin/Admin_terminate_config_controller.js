@@ -1,15 +1,8 @@
 "use strict";
 
 const app = require("express").Router();
-const Sequelize = require("sequelize");
-const logger = require("../../services/LoggingService");
-let pagination = require("../../services/PaginationService");
 let SessionService = require("../../services/SessionService");
-let JwtService = require("../../services/JwtService");
 const ValidationService = require("../../services/ValidationService");
-const PermissionService = require("../../services/PermissionService");
-const UploadService = require("../../services/UploadService");
-const AuthService = require("../../services/AuthService");
 const db = require("../../models");
 const helpers = require("../../core/helpers");
 
@@ -59,19 +52,7 @@ app.get(
       viewModel.set_sort_base_url(`/admin/terminates/${+req.params.num}`);
       viewModel.set_sort(direction);
 
-      // const list = await db.terminate.get_terminate_paginated(
-      //   db,
-      //   {},
-      //   viewModel.get_page() - 1 < 0 ? 0 : viewModel.get_page(),
-      //   viewModel.get_per_page(),
-      //   where,
-      //   order_by,
-      //   direction,
-      //   []
-      // );
-
-      const list = await db.terminate.findAll(); // Fetch all items from the terminate table
-      // return res.json(list);
+      const list = await db.terminate.findAll(); 
       viewModel.set_list(list);
 
       if (format == "csv") {
@@ -103,7 +84,6 @@ app.get(
     }
 
     const quizzesAdminAddViewModel = require("../../view_models/quizzes_admin_add_view_model");
-
     const viewModel = new quizzesAdminAddViewModel(
       db.quiz,
       "Add quiz",
@@ -136,10 +116,7 @@ app.post(
       "",
       "/admin/quizzes"
     );
-
-    // TODO use separate controller for image upload
-    //  {{{upload_field_setter}}}
-
+    
     const { name, description } = req.body;
 
     viewModel.form_fields = {

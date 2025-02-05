@@ -1,13 +1,6 @@
 "use strict";
-
-const ValidationService = require("../../services/ValidationService");
-const AuthService = require("../../services/AuthService");
-const JWTService = require("../../services/JwtService");
 const SessionService = require("../../services/SessionService");
-const PasswordService = require("../../services/PasswordService");
 const db = require("../../models");
-const helpers = require("../../core/helpers");
-const { validateEmail } = require("../../core/utils");
 const app = require("express").Router();
 
 const role_id = 1;
@@ -18,7 +11,7 @@ app.get(
 
   async function (req, res, next) {
     const user = await db.user.getByPK(req.session.user);
-    
+
     const TerminateViewModel = require("../../view_models/admin_terminate_view_model");
     const viewModel = new TerminateViewModel(db.terminate, "Terminate");
     viewModel._base_url = "/admin/terminate";
@@ -51,7 +44,7 @@ app.post(
 
   async function (req, res, next) {
     const user = await db.user.getByPK(req.session.user);
-    
+
     const TerminateViewModel = require("../../view_models/admin_terminate_view_model");
     const viewModel = new TerminateViewModel(db.terminate, "Terminate");
     viewModel._base_url = "/admin/terminate";
@@ -91,7 +84,7 @@ app.put(
 
   async function (req, res, next) {
     const user = await db.user.getByPK(req.session.user);
-    
+
     const TerminateViewModel = require("../../view_models/admin_terminate_view_model");
     const viewModel = new TerminateViewModel(db.terminate, "Terminate");
     viewModel._base_url = "/admin/terminate";

@@ -8,9 +8,6 @@
  *
  */
 
-const moment = require("moment");
-const bcrypt = require("bcryptjs");
-const { Op } = require("sequelize");
 const { intersection } = require("lodash");
 const coreModel = require("../core/models");
 
@@ -67,13 +64,6 @@ module.exports = (sequelize, DataTypes) => {
     return results;
   };
 
-  //   Terminate.associate = function(models) {
-  // Terminate.hasMany(models.question, {
-  //                 foreignKey: "quiz_id",
-  //                 as: "questions",
-  //                 constraints: false,
-  //               }) };
-
   Terminate.allowFields = function () {
     return ["quiz_id", "id", "message", "counter"];
   };
@@ -109,8 +99,6 @@ module.exports = (sequelize, DataTypes) => {
     ]);
   };
 
-
-  // ex
   Terminate.intersection = function (fields) {
     if (fields) {
       return intersection(
